@@ -1,21 +1,48 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-from hermes_python.hermes import Hermes
+import configparser
+from hermes_python.hermes import Hermes, MqttOptions
+import io
+from tankerkoenig import Tankerkoenig
+import toml
 
 USERNAME_INTENTS = "domi"
+MQTT_BROKER_ADDRESS = "localhost:1883"
+MQTT_USERNAME = None
+MQTT_PASSWORD = None
 
-def user_intent(intentname):
-    return USERNAME_INTENTS + ":" + intentname
+def add_prefix(intent_name):
+    return USERNAME_INTENTS + ":" + intent_name
 
+def read_configuration_file():
+    try:
+        cp = configparser.ConfigParser()
+        with io.open("config.ini", encoding="utf-8") as f:
+            cp.read_file(f)
+        return {section: {option_name: option for option_name, option in cp.items(section)}
+                for section in cp.sections()}
+    except (IOError, configparser.Error):
+        return dict()
 
-def subscribe_intent_callback(hermes, intent_message):
-    intentname = intent_message.intent.intent_name
+def intent_callback_diesel(hermes, intent_message):
+    hermes.publish_end_session(intent_message.session_id, tankerkoenig.diesel_price(intent_message))
 
-    if intentname == user_intent("dieselInfo"):
-        pass
-    elif intentname == user_intent("benzinInfo"):
-        pass
+def intent_callback_benzin(hermes, intent_message):
+    hermes.publish_end_session(intent_message.session_id, tankerkoenig.benzin_price(intent_message))
 
 if __name__ == "__main__":
-    with Hermes("localhost:1883") as h:
-        h.subscribe_intents(subscribe_intent_callback).start()
+    config = read_configuration_file()
+    tankerkoenig = Tankerkoenig(config)
+    if 'mqtt' in snips_config['snips-common'].keys():
+        MQTT_BROKER_ADDRESS = snips_config['snips-common']['mqtt']
+    if 'mqtt_username' in snips_config['snips-common'].keys():
+        MQTT_USERNAME = snips_config['snips-common']['mqtt_username']
+    if 'mqtt_password' in snips_config['snips-common'].keys():
+        MQTT_PASSWORD = snips_config['snips-common']['mqtt_password']
+    mqtt_opts = MqttOptions(username=MQTT_USERNAME, password=MQTT_PASSWORD, broker_address=MQTT_BROKER_ADDRESS)
+
+    with Hermes(mqtt_options=mqtt_opts) as h:
+        h.subscribe_intent(add_prefix("dieselInfo"), intent_callback_diesel)
+        h.subscribe_intent(add_prefix("benzinInfo"), intent_callback_benzin)
+        h.start()
