@@ -27,7 +27,7 @@ def read_configuration_file():
 
 def intent_callback_fuel(hermes, intent_message):
     print('callback fuel drin')
-    for (slot_value, slot) in intent_message.slots.items():
+    for (slot, slot_value) in intent_message.slots.items():
         print('slot_value loop')
         print(slot_value)
         if slot_value == "Diesel":
