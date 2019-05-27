@@ -9,6 +9,7 @@ import random
 class Tankerkoenig:
 
     def __init__(self, config):
+        print('init tankerkoenig beginning')
         self.weather_api_base_url = "https://creativecommons.tankerkoenig.de/json/list.php"
         try:
             self.tankerkoenig_api_key = config['secret']['tankerkoenig_api_key']
@@ -22,8 +23,10 @@ class Tankerkoenig:
             self.longitude = config['general']['long']
         except KeyError:
             self.longitude = "12.0602148"
+        print('init tankerkoenig ende')
 
     def diesel_price(self, intent_message):
+        print('diesel price method start')
         return "Diesel ist umsonst"
         fuel_prices = self.get_fuelprices(intent_message)
         if fuel_prices['status'] == 'ok':
