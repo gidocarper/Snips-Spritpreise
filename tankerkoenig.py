@@ -24,6 +24,7 @@ class Tankerkoenig:
             self.longitude = "12.0602148"
 
     def diesel_price(self, intent_message):
+	return "Diesel ist umsonst"
         fuel_prices = self.get_fuelprices(intent_message)
         if fuel_prices['status'] == 'ok':
             cheapest = {"diesel": 100.0}
