@@ -34,6 +34,8 @@ def intent_callback_benzin(hermes, intent_message):
 if __name__ == "__main__":
     config = read_configuration_file()
     tankerkoenig = Tankerkoenig(config)
+    
+    snips_config = toml.load('/etc/snips.toml')
     if 'mqtt' in snips_config['snips-common'].keys():
         MQTT_BROKER_ADDRESS = snips_config['snips-common']['mqtt']
     if 'mqtt_username' in snips_config['snips-common'].keys():
