@@ -27,9 +27,9 @@ def read_configuration_file():
 
 def intent_callback_fuel(hermes, intent_message):
     for (slot_value, slot) in intent_message.slots.items():
-        if slot_value == "diesel":
+        if slot_value == "Diesel":
             hermes.publish_end_session(intent_message.session_id, tankerkoenig.diesel_price(intent_message))
-        elif slot_value == "benzin":
+        elif slot_value == "Benzin":
             hermes.publish_end_session(intent_message.session_id, tankerkoenig.benzin_price(intent_message))
 
 if __name__ == "__main__":
