@@ -7,12 +7,12 @@ import io
 from tankerkoenig import Tankerkoenig
 import toml
 
-USERNAME_INTENTS = "domi"
+USERNAME_INTENTS = "hablijack"
 MQTT_BROKER_ADDRESS = "localhost:1883"
 MQTT_USERNAME = None
 MQTT_PASSWORD = None
 
-def add_prefix(intent_name):
+def add_postfix(intent_name):
     return USERNAME_INTENTS + ":" + intent_name
 
 def read_configuration_file():
@@ -45,6 +45,5 @@ if __name__ == "__main__":
     mqtt_opts = MqttOptions(username=MQTT_USERNAME, password=MQTT_PASSWORD, broker_address=MQTT_BROKER_ADDRESS)
 
     with Hermes(mqtt_options=mqtt_opts) as h:
-        h.subscribe_intent(add_prefix("dieselInfo"), intent_callback_diesel)
-        h.subscribe_intent(add_prefix("benzinInfo"), intent_callback_benzin)
+        h.subscribe_intent(add_postfix("fuelInfo"), intent_callback_fuel)
         h.start()
