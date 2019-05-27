@@ -26,13 +26,10 @@ def read_configuration_file():
         return dict()
 
 def intent_callback_fuel(hermes, intent_message):
-    print('callback fuel drin')
     for (slot_value, slot) in intent_message.slots.items():
-        print(slot[0].slot_value.value.value)
-        print(slot[0])
-        if slot[0].slot_value.value == "Diesel":
+        if slot[0].slot_value.value.value == "Diesel":
             hermes.publish_end_session(intent_message.session_id, tankerkoenig.diesel_price(intent_message))
-        elif slot[0].slot_value.value == "Benzinb":
+        elif slot[0].slot_value.value.value == "Benzinb":
             hermes.publish_end_session(intent_message.session_id, tankerkoenig.benzin_price(intent_message))
 
 if __name__ == "__main__":
