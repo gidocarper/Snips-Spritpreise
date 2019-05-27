@@ -31,7 +31,7 @@ class Tankerkoenig:
                 if station['diesel'] <= cheapest['diesel']:
                     cheapest = station
             response = "Der günstigste Diesel kostet gerade: {0}€, bei der Tankstelle {1}.".format(
-                cheapest["diesel"],
+                cheapest["diesel"].replace('.', ','),
                 cheapest["name"]
             )
             return response
