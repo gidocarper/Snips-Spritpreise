@@ -25,16 +25,17 @@ def read_configuration_file():
     except (IOError, configparser.Error):
         return dict()
 
-def intent_callback_diesel(hermes, intent_message):
-    hermes.publish_end_session(intent_message.session_id, tankerkoenig.diesel_price(intent_message))
-
-def intent_callback_benzin(hermes, intent_message):
-    hermes.publish_end_session(intent_message.session_id, tankerkoenig.benzin_price(intent_message))
+def intent_callback_fuel(hermes, intent_message):
+    for (slot_value, slot) in intent_message.slots.items():
+        if slot_value == "diesel":
+            hermes.publish_end_session(intent_message.session_id, tankerkoenig.diesel_price(intent_message))
+        elif slot_value == "benzin":
+            hermes.publish_end_session(intent_message.session_id, tankerkoenig.benzin_price(intent_message))
 
 if __name__ == "__main__":
     config = read_configuration_file()
     tankerkoenig = Tankerkoenig(config)
-    
+
     snips_config = toml.load('/etc/snips.toml')
     if 'mqtt' in snips_config['snips-common'].keys():
         MQTT_BROKER_ADDRESS = snips_config['snips-common']['mqtt']

@@ -26,8 +26,6 @@ class Tankerkoenig:
         print('init tankerkoenig ende')
 
     def diesel_price(self, intent_message):
-        print('diesel price method start')
-        return "Diesel ist umsonst"
         fuel_prices = self.get_fuelprices(intent_message)
         if fuel_prices['status'] == 'ok':
             cheapest = {"diesel": 100.0}
