@@ -17,11 +17,11 @@ class Tankerkoenig:
         try:
             self.latitude = config['general']['lat']
         except KeyError:
-            self.latitude = "49.982334"
+            self.latitude = "XX.XXXXXX"
         try:
             self.longitude = config['general']['long']
         except KeyError:
-            self.longitude = "12.0602148"
+            self.longitude = "XX.XXXXXX"
 
     def diesel_price(self, intent_message):
         fuel_prices = self.get_fuelprices(intent_message)
