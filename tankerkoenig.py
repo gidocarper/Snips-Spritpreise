@@ -15,11 +15,11 @@ class Tankerkoenig:
         except KeyError:
             self.tankerkoenig_api_key = "XXXXXXXXXXXXXXXXXXXXX"
         try:
-            self.latitude = config['secret']['lat']
+            self.latitude = config['secret']['latitude']
         except KeyError:
             self.latitude = "XX.XXXXXX"
         try:
-            self.longitude = config['secret']['long']
+            self.longitude = config['secret']['longitude']
         except KeyError:
             self.longitude = "XX.XXXXXX"
 
